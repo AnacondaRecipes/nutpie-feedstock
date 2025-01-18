@@ -36,6 +36,8 @@ requirements:
     - python
     - pip
     - maturin >=1.1,<2.0
+    # Unable to find libclang: "couldn't find any valid shared libraries matching: ['clang.dll', 'libclang.dll'], set the `LIBCLANG_PATH` environment variable to a path where one of these files can be found (invalid: [])"
+    # LIBCLANG_PATH: %PREFIX%\Library\bin don`t have inside libclang
     - clang  # [win]
     - libclang  # [win]
     - clangdev  # [win]
