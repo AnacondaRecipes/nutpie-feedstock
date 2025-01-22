@@ -15,9 +15,6 @@ build:
   skip: True  # [py<310 or py>312]
   # clang and libclang does not exists on s390x
   skip: True  # [s390x]
-  script_env:
-    - LIBCLANG_PATH=$BUILD_PREFIX/lib  # [not win]
-    - LIBCLANG_PATH=%LIBRARY_BIN%  # [win]
 
 requirements:
   build:
@@ -25,21 +22,19 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('rust') }}
     - cargo-bundle-licenses
-    - libclang  # [linux or osx]
-    - clang  # [linux or osx]
+    - clang
+    - libclang
     # Unable to find libclang: "couldn't find any valid shared libraries matching: ['clang.dll', 'libclang.dll'], set the `LIBCLANG_PATH` environment variable to a path where one of these files can be found (invalid: [])"
     # LIBCLANG_PATH: %PREFIX%\Library\bin don`t have inside libclang
-    - clang  # [win]
-    - libclang  # [win]
     - clangdev  # [win]
   host:
     - python
     - pip
     - maturin >=1.1,<2.0
+    - clang  
+    - libclang  
     # Unable to find libclang: "couldn't find any valid shared libraries matching: ['clang.dll', 'libclang.dll'], set the `LIBCLANG_PATH` environment variable to a path where one of these files can be found (invalid: [])"
     # LIBCLANG_PATH: %PREFIX%\Library\bin don`t have inside libclang
-    - clang  # [win]
-    - libclang  # [win]
     - clangdev  # [win]
   run:
     - python
@@ -51,6 +46,7 @@ requirements:
     # https://discourse.pymc.io/t/importerror-cannot-import-name-gaussian-from-scipy-signal/14170/2
     - scipy <1.13
     # ERROR (nutpie,lib/python3.12/site-packages/nutpie/_lib.cpython-312-aarch64-linux-gnu.so): .. but ['defaults/linux-aarch64::libgcc-ng==11.2.0=h1234567_1'] not in reqs/run
+    # https://github.com/AnacondaRecipes/rust-activation-feedstock/blob/master/recipe/activate.sh#L50-L51
     - libgcc-ng  # [linux]
   run_constrained:
     - pymc >=5.15.0
